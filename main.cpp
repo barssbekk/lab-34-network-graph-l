@@ -2,6 +2,7 @@
 #include <vector>
 #include <queue>
 #include <stack>
+#include <string>
 
 using namespace std;
 
@@ -11,9 +12,21 @@ struct Edge {
 
 typedef pair<int, int> Pair;
 
-// Original had 7 nodes (0-6), removed nodes 1 and 3, added 6 new nodes
-// New graph has 11 nodes (0-10)
 const int SIZE = 11;
+
+string locationNames[SIZE] = {
+    "City Hall",          // 0
+    "Central Park",       // 1
+    "Main Library",       // 2
+    "Police Station",     // 3
+    "Fire Department",    // 4
+    "Hospital",           // 5
+    "Shopping Mall",      // 6
+    "Train Station",      // 7
+    "Airport",            // 8
+    "University",         // 9
+    "Sports Arena"        // 10
+};
 
 class Graph {
 public:
@@ -31,13 +44,15 @@ public:
     }
 
     void printGraph() {
-        cout << "Graph's adjacency list:" << endl;
+        cout << "City Road Network:" << endl;
+        cout << "==================" << endl;
         for (int i = 0; i < (int)adjList.size(); i++) {
-            cout << i << " --> ";
+            cout << locationNames[i] << " connects to:" << endl;
             for (Pair v : adjList[i])
-                cout << "(" << v.first << ", " << v.second << ") ";
-            cout << endl;
+                cout << "  -> " << locationNames[v.first]
+                     << " (Distance: " << v.second << " miles)" << endl;
         }
+        cout << endl;
     }
 
     void DFS(int start) {
@@ -47,16 +62,20 @@ public:
         visited[start] = true;
         s.push(start);
 
-        cout << "DFS starting from vertex " << start << ":" << endl;
+        cout << "Road Inspection Route (DFS) starting from " << locationNames[start] << ":" << endl;
+        cout << "Purpose: Inspecting all roads reachable from origin" << endl;
+        cout << "=====================================================" << endl;
 
         while (!s.empty()) {
             int node = s.top();
             s.pop();
-            cout << node << " ";
+            cout << "Visiting: " << locationNames[node] << endl;
 
             for (auto &neighbor : adjList[node]) {
                 if (!visited[neighbor.first]) {
                     visited[neighbor.first] = true;
+                    cout << "  -> Road to " << locationNames[neighbor.first]
+                         << " (" << neighbor.second << " miles)" << endl;
                     s.push(neighbor.first);
                 }
             }
@@ -71,16 +90,20 @@ public:
         visited[start] = true;
         q.push(start);
 
-        cout << "BFS starting from vertex " << start << ":" << endl;
+        cout << "Emergency Response Coverage (BFS) starting from " << locationNames[start] << ":" << endl;
+        cout << "Purpose: Finding all locations reachable layer by layer" << endl;
+        cout << "========================================================" << endl;
 
         while (!q.empty()) {
             int node = q.front();
             q.pop();
-            cout << node << " ";
+            cout << "Checking: " << locationNames[node] << endl;
 
             for (auto &neighbor : adjList[node]) {
                 if (!visited[neighbor.first]) {
                     visited[neighbor.first] = true;
+                    cout << "  -> Next stop: " << locationNames[neighbor.first]
+                         << " (" << neighbor.second << " miles)" << endl;
                     q.push(neighbor.first);
                 }
             }
@@ -90,9 +113,6 @@ public:
 };
 
 int main() {
-    // Removed original nodes 1 and 3.
-    // Added 6 new nodes: 5, 6, 7, 8, 9, 10.
-    // All new weights.
     vector<Edge> edges = {
         {0, 2, 15},
         {0, 4, 10},
