@@ -151,17 +151,12 @@ public:
     }
 
     void primMST() {
-        // Track which nodes are in the MST
         vector<bool> inMST(SIZE, false);
-        // Minimum weight to reach each node
         vector<int> key(SIZE, INT_MAX);
-        // Parent of each node in the MST
         vector<int> parent(SIZE, -1);
 
-        // Start from node 0
         key[0] = 0;
 
-        // Min-heap: (weight, node)
         priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
         pq.push(make_pair(0, 0));
 
@@ -219,11 +214,42 @@ int main() {
 
     Graph graph(edges);
 
-    graph.printGraph();
-    graph.DFS(0);
-    graph.BFS(0);
-    graph.dijkstra(0);
-    graph.primMST();
+    int choice;
+    do {
+        cout << "City Road Network Menu:" << endl;
+        cout << "[1] Display city road network" << endl;
+        cout << "[2] Road inspection route (DFS)" << endl;
+        cout << "[3] Emergency response coverage (BFS)" << endl;
+        cout << "[4] Calculate shortest paths" << endl;
+        cout << "[5] Find minimum spanning tree" << endl;
+        cout << "[0] Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cout << endl;
+
+        switch (choice) {
+            case 1:
+                graph.printGraph();
+                break;
+            case 2:
+                graph.DFS(0);
+                break;
+            case 3:
+                graph.BFS(0);
+                break;
+            case 4:
+                graph.dijkstra(0);
+                break;
+            case 5:
+                graph.primMST();
+                break;
+            case 0:
+                cout << "Exiting program." << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please try again." << endl << endl;
+        }
+    } while (choice != 0);
 
     return 0;
 }
