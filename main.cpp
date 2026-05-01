@@ -113,11 +113,9 @@ public:
     }
 
     void dijkstra(int start) {
-        // Distance vector, all set to infinity except source
         vector<int> dist(SIZE, INT_MAX);
         dist[start] = 0;
 
-        // Min-heap priority queue: (distance, node)
         priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
         pq.push(make_pair(0, start));
 
@@ -126,7 +124,6 @@ public:
             int currNode = pq.top().second;
             pq.pop();
 
-            // Skip if we already found a shorter path
             if (currDist > dist[currNode])
                 continue;
 
@@ -150,6 +147,54 @@ public:
             else
                 cout << dist[i] << " miles" << endl;
         }
+        cout << endl;
+    }
+
+    void primMST() {
+        // Track which nodes are in the MST
+        vector<bool> inMST(SIZE, false);
+        // Minimum weight to reach each node
+        vector<int> key(SIZE, INT_MAX);
+        // Parent of each node in the MST
+        vector<int> parent(SIZE, -1);
+
+        // Start from node 0
+        key[0] = 0;
+
+        // Min-heap: (weight, node)
+        priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
+        pq.push(make_pair(0, 0));
+
+        while (!pq.empty()) {
+            int currNode = pq.top().second;
+            pq.pop();
+
+            inMST[currNode] = true;
+
+            for (auto &neighbor : adjList[currNode]) {
+                int nextNode   = neighbor.first;
+                int edgeWeight = neighbor.second;
+
+                if (!inMST[nextNode] && edgeWeight < key[nextNode]) {
+                    key[nextNode]    = edgeWeight;
+                    parent[nextNode] = currNode;
+                    pq.push(make_pair(key[nextNode], nextNode));
+                }
+            }
+        }
+
+        cout << "Minimum Spanning Tree edges:" << endl;
+        cout << "============================" << endl;
+        int totalWeight = 0;
+        for (int i = 1; i < SIZE; i++) {
+            if (parent[i] != -1) {
+                cout << "Edge from " << locationNames[parent[i]]
+                     << " to " << locationNames[i]
+                     << " with distance: " << key[i] << " miles" << endl;
+                totalWeight += key[i];
+            }
+        }
+        cout << "Total MST distance: " << totalWeight << " miles" << endl;
         cout << endl;
     }
 };
@@ -178,6 +223,7 @@ int main() {
     graph.DFS(0);
     graph.BFS(0);
     graph.dijkstra(0);
+    graph.primMST();
 
     return 0;
 }
