@@ -11,7 +11,9 @@ struct Edge {
 
 typedef pair<int, int> Pair;
 
-const int SIZE = 7;
+// Original had 7 nodes (0-6), removed nodes 1 and 3, added 6 new nodes
+// New graph has 11 nodes (0-10)
+const int SIZE = 11;
 
 class Graph {
 public:
@@ -88,10 +90,24 @@ public:
 };
 
 int main() {
+    // Removed original nodes 1 and 3.
+    // Added 6 new nodes: 5, 6, 7, 8, 9, 10.
+    // All new weights.
     vector<Edge> edges = {
-        {0, 1, 12}, {0, 2, 8}, {0, 3, 21},
-        {2, 3, 6},  {2, 6, 2}, {5, 6, 6},
-        {4, 5, 9},  {2, 4, 4}, {2, 5, 5}
+        {0, 2, 15},
+        {0, 4, 10},
+        {2, 4, 7},
+        {2, 5, 12},
+        {2, 6, 9},
+        {4, 7, 5},
+        {4, 8, 18},
+        {5, 9, 6},
+        {5, 6, 11},
+        {6, 10, 4},
+        {7, 8, 8},
+        {8, 9, 14},
+        {9, 10, 3},
+        {7, 10, 20}
     };
 
     Graph graph(edges);
