@@ -11,14 +11,13 @@ struct Edge {
 
 typedef pair<int, int> Pair;
 
-// Original had 7 nodes (0-6). Removed nodes 3 and 6, added nodes 5-10 (6 new nodes).
-// New graph has 9 nodes (0-8).
-const int SIZE = 9;
+const int SIZE = 7;
 
 class Graph {
 public:
     vector<vector<Pair>> adjList;
 
+    // Constructor: builds adjacency list from edge list
     Graph(vector<Edge> const &edges) {
         adjList.resize(SIZE);
         for (auto &edge : edges) {
@@ -40,6 +39,7 @@ public:
         }
     }
 
+    // Depth-First Search using an explicit stack
     void DFS(int start) {
         vector<bool> visited(SIZE, false);
         stack<int> s;
@@ -54,6 +54,7 @@ public:
             s.pop();
             cout << node << " ";
 
+            // Push unvisited neighbors onto the stack
             for (auto &neighbor : adjList[node]) {
                 if (!visited[neighbor.first]) {
                     visited[neighbor.first] = true;
@@ -64,6 +65,7 @@ public:
         cout << endl;
     }
 
+    // Breadth-First Search using a queue
     void BFS(int start) {
         vector<bool> visited(SIZE, false);
         queue<int> q;
@@ -78,6 +80,7 @@ public:
             q.pop();
             cout << node << " ";
 
+            // Enqueue unvisited neighbors
             for (auto &neighbor : adjList[node]) {
                 if (!visited[neighbor.first]) {
                     visited[neighbor.first] = true;
@@ -90,23 +93,12 @@ public:
 };
 
 int main() {
-    // Removed original nodes 3 and 6.
-    // Added 6 new nodes: 3, 4, 5, 6, 7, 8 (renumbered into a fresh 9-node graph).
-    // New edges with updated weights:
+    // Original graph from the lesson
+    // (src, dest, weight)
     vector<Edge> edges = {
-        {0, 1, 8},
-        {0, 2, 21},
-        {1, 2, 6},
-        {1, 3, 5},
-        {1, 4, 4},
-        {2, 7, 11},
-        {2, 8, 8},
-        {3, 4, 9},
-        {5, 6, 10},
-        {5, 7, 15},
-        {5, 8, 5},
-        {6, 7, 3},
-        {6, 8, 7}
+        {0, 1, 12}, {0, 2, 8}, {0, 3, 21},
+        {2, 3, 6},  {2, 6, 2}, {5, 6, 6},
+        {4, 5, 9},  {2, 4, 4}, {2, 5, 5}
     };
 
     Graph graph(edges);
