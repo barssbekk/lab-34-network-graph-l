@@ -17,7 +17,6 @@ class Graph {
 public:
     vector<vector<Pair>> adjList;
 
-    // Constructor: builds adjacency list from edge list
     Graph(vector<Edge> const &edges) {
         adjList.resize(SIZE);
         for (auto &edge : edges) {
@@ -39,7 +38,6 @@ public:
         }
     }
 
-    // Depth-First Search using an explicit stack
     void DFS(int start) {
         vector<bool> visited(SIZE, false);
         stack<int> s;
@@ -54,7 +52,6 @@ public:
             s.pop();
             cout << node << " ";
 
-            // Push unvisited neighbors onto the stack
             for (auto &neighbor : adjList[node]) {
                 if (!visited[neighbor.first]) {
                     visited[neighbor.first] = true;
@@ -65,7 +62,6 @@ public:
         cout << endl;
     }
 
-    // Breadth-First Search using a queue
     void BFS(int start) {
         vector<bool> visited(SIZE, false);
         queue<int> q;
@@ -80,7 +76,6 @@ public:
             q.pop();
             cout << node << " ";
 
-            // Enqueue unvisited neighbors
             for (auto &neighbor : adjList[node]) {
                 if (!visited[neighbor.first]) {
                     visited[neighbor.first] = true;
@@ -93,8 +88,6 @@ public:
 };
 
 int main() {
-    // Original graph from the lesson
-    // (src, dest, weight)
     vector<Edge> edges = {
         {0, 1, 12}, {0, 2, 8}, {0, 3, 21},
         {2, 3, 6},  {2, 6, 2}, {5, 6, 6},
