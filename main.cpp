@@ -3,6 +3,7 @@
 #include <queue>
 #include <stack>
 #include <string>
+#include <climits>
 
 using namespace std;
 
@@ -110,6 +111,47 @@ public:
         }
         cout << endl;
     }
+
+    void dijkstra(int start) {
+        // Distance vector, all set to infinity except source
+        vector<int> dist(SIZE, INT_MAX);
+        dist[start] = 0;
+
+        // Min-heap priority queue: (distance, node)
+        priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
+        pq.push(make_pair(0, start));
+
+        while (!pq.empty()) {
+            int currDist = pq.top().first;
+            int currNode = pq.top().second;
+            pq.pop();
+
+            // Skip if we already found a shorter path
+            if (currDist > dist[currNode])
+                continue;
+
+            for (auto &neighbor : adjList[currNode]) {
+                int nextNode   = neighbor.first;
+                int edgeWeight = neighbor.second;
+
+                if (dist[currNode] + edgeWeight < dist[nextNode]) {
+                    dist[nextNode] = dist[currNode] + edgeWeight;
+                    pq.push(make_pair(dist[nextNode], nextNode));
+                }
+            }
+        }
+
+        cout << "Shortest path from " << locationNames[start] << ":" << endl;
+        cout << "========================================" << endl;
+        for (int i = 0; i < SIZE; i++) {
+            cout << locationNames[start] << " -> " << locationNames[i] << " : ";
+            if (dist[i] == INT_MAX)
+                cout << "No path" << endl;
+            else
+                cout << dist[i] << " miles" << endl;
+        }
+        cout << endl;
+    }
 };
 
 int main() {
@@ -135,6 +177,7 @@ int main() {
     graph.printGraph();
     graph.DFS(0);
     graph.BFS(0);
+    graph.dijkstra(0);
 
     return 0;
 }
